@@ -88,16 +88,9 @@ export async function signup(currentState: { message: string }, formData: FormDa
       data.name
     );
 
-    // Create record in DB
-    await prisma.user.create({
-      data: {
-        id: signUpData.user.id,
-        name: data.name,
-        email: signUpData.user.email!,
-        stripeId: stripeID,
-        plan: 'none',
-      },
-    });
+    // Note: User creation is now handled through organization invitations
+    // The user will be created when they accept an invitation
+    // For now, we skip automatic user creation in favor of invitation-based flow
   } catch (err) {
     console.error('Error in signup:', err instanceof Error ? err.message : 'Unknown error');
     return { message: 'Failed to setup user account' };

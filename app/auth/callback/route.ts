@@ -28,16 +28,9 @@ export async function GET(request: Request) {
           user!.email!,
           user!.user_metadata.full_name
         );
-        // Create record in DB
-        await prisma.user.create({
-          data: {
-            id: user!.id,
-            name: user!.user_metadata.full_name,
-            email: user!.email!,
-            stripeId: stripeID,
-            plan: 'none',
-          },
-        });
+        // Note: User creation is now handled through organization invitations
+        // The user will be created when they accept an invitation
+        // For now, we skip automatic user creation in favor of invitation-based flow
       }
 
       const forwardedHost = request.headers.get('x-forwarded-host'); // original origin before load balancer

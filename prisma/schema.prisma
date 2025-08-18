@@ -4,18 +4,63 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  ORG_ADMIN
+  USER
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  domain    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       User[]
+  invitations Invitation[]
+
+  @@map("organizations")
 }
 
 model User {
-  id        String   @id
-  name      String
-  email     String   @unique
-  plan      String
-  stripeId  String   @map("stripe_id")
+  id             String   @id @default(uuid())
+  organizationId String   @map("organization_id")
+  authUserId     String   @unique @map("auth_user_id") // Supabase auth.users.id (UUID)
+  email          String   @unique
+  name           String?
+  role           UserRole @default(USER)
+  status         String   @default("active")
+  plan           String?
+  stripeId       String?  @map("stripe_id")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  @@map("users_table")
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@map("users")
+}
+
+model Invitation {
+  id             String      @id @default(uuid())
+  organizationId String      @map("organization_id")
+  email          String
+  role           UserRole    @default(USER)
+  tokenHash      String      @unique @map("token_hash")
+  expiresAt      DateTime    @map("expires_at")
+  usedAt         DateTime?   @map("used_at")
+  createdAt      DateTime    @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([tokenHash])
+  @@map("invitations")
 }
 
 

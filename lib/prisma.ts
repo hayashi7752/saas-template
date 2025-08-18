@@ -8,7 +8,6 @@ function getPgBouncerSafeUrl(): string | undefined {
   const hasQuery = base.includes('?');
   const sep = hasQuery ? '&' : '?';
   const add = 'pgbouncer=true&connection_limit=1';
-  // Avoid duplicating flags if already present
   if (/pgbouncer=true/.test(base)) return base;
   return `${base}${sep}${add}`;
 }
@@ -18,7 +17,7 @@ const runtimeUrl = getPgBouncerSafeUrl();
 export const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
-    log: ['query', 'error', 'warn'],
+    log: ['error', 'warn'],
     datasources: runtimeUrl ? { db: { url: runtimeUrl } } : undefined,
   });
 
