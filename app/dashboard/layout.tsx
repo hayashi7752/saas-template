@@ -32,9 +32,9 @@ export default async function DashboardLayout({
   }
 
   return (
-    <html lang="en">
+    <>
       <DashboardHeader />
       {children}
-    </html>
+    </>
   );
 }

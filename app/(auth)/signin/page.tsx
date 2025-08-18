@@ -6,12 +6,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import SignupForm from '@/components/SignupForm';
-import ProviderSigninBlock from '@/components/ProviderSigninBlock';
 
-export default function Signup() {
+import ProviderSigninBlock from '@/components/ProviderSigninBlock';
+import LoginForm from '@/components/LoginForm';
+
+export default function SignIn() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
       <Card className="mx-auto w-[350px]">
@@ -22,11 +24,11 @@ export default function Signup() {
             </Link>
           </div>
 
-          <CardTitle className="text-2x\l font-bold">Signup</CardTitle>
-          <CardDescription>Create your account now!</CardDescription>
+          <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+          <CardDescription>Choose your preferred login method</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <SignupForm />
+          <LoginForm />
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -38,8 +40,11 @@ export default function Signup() {
           <ProviderSigninBlock />
         </CardContent>
         <CardFooter className="flex-col text-center">
-          <Link className="w-full text-sm text-muted-foreground" href="/login">
-            Have an account? Login
+          <Link className="w-full text-sm text-muted-foreground " href="/forgot-password">
+            Forgot password?
+          </Link>
+          <Link className="w-full text-sm text-muted-foreground" href="/signup">
+            Don&apos;t have an account? Sign up
           </Link>
         </CardFooter>
       </Card>
