@@ -35,6 +35,7 @@ model User {
   name           String?
   role           UserRole @default(USER)
   status         String   @default("active")
+  isSystemAdmin  Boolean  @default(false)
   plan           String?
   stripeId       String?  @map("stripe_id")
   createdAt      DateTime @default(now())

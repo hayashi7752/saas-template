@@ -10,12 +10,12 @@ async function main() {
     update: {},
     create: {
       id: '00000000-0000-0000-0000-000000000001',
-      name: 'Acme Inc',
-      domain: 'acme.test',
+      name: 'PeakState',
+      domain: 'peakstate.local',
     },
   });
 
-  const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@acme.test';
+  const adminEmail = process.env.SEED_ADMIN_EMAIL || 'test@example.com';
   const adminAuthId = process.env.SEED_ADMIN_AUTH_ID || randomUUID();
 
   // Seed Admin User (linked to organization)
@@ -25,20 +25,22 @@ async function main() {
       organizationId: org.id,
       role: UserRole.ORG_ADMIN,
       status: 'active',
+      isSystemAdmin: true,
     },
     create: {
       organizationId: org.id,
       authUserId: adminAuthId,
       email: adminEmail,
-      name: 'Acme Admin',
+      name: 'System Admin',
       role: UserRole.ORG_ADMIN,
       status: 'active',
       plan: 'none',
+      isSystemAdmin: true,
     },
   });
 
   // Seed a regular user invitation
-  const inviteEmail = process.env.SEED_INVITE_EMAIL || 'user@acme.test';
+  const inviteEmail = process.env.SEED_INVITE_EMAIL || 'user@peakstate.local';
   const inviteTokenHash = randomUUID().replace(/-/g, '');
   await prisma.invitation.upsert({
     where: { tokenHash: inviteTokenHash },

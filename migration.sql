@@ -70,3 +70,7 @@ ALTER TABLE "public"."users" ADD CONSTRAINT "users_organization_id_fkey" FOREIGN
 -- AddForeignKey
 ALTER TABLE "public"."invitations" ADD CONSTRAINT "invitations_organization_id_fkey" FOREIGN KEY ("organization_id") REFERENCES "public"."organizations"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+-- AddColumn isSystemAdmin to users
+ALTER TABLE "public"."users" ADD COLUMN IF NOT EXISTS "isSystemAdmin" BOOLEAN NOT NULL DEFAULT false;
+
