@@ -102,3 +102,33 @@ No testing framework is currently configured. Consider adding Vitest or Jest if 
 - Stripe webhook endpoint: `/webhook/stripe` (must be configured in Stripe dashboard)
 - Supabase auth cookies are handled automatically via middleware
 - UI components use CSS variables for theming (configured in globals.css)
+
+## Environment Variables
+
+### Development Setup
+
+1. **Local Development**: Use `.env.local` (automatically loaded by Next.js)
+   - Copy `.env.local.example` to `.env.local`
+   - Update with your local Supabase values from `npx supabase status`
+   - This file takes priority over `.env` in development
+
+2. **Production**: Use `.env` or environment variables in your hosting platform
+   - Never commit `.env` or `.env.local` files
+   - Set environment variables in your hosting platform (Vercel, etc.)
+
+### Loading Order (Next.js default)
+1. `.env.local` (highest priority, local dev only)
+2. `.env.development` or `.env.production` (based on NODE_ENV)
+3. `.env` (lowest priority, all environments)
+
+### Supabase Local Development
+```bash
+# Start local Supabase
+npx supabase start
+
+# Get local credentials
+npx supabase status
+
+# Stop local Supabase
+npx supabase stop
+```

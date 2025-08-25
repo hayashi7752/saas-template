@@ -22,6 +22,78 @@ This is the ultimate [Next.js](https://nextjs.org/) SAAS starter kit that includ
 
 As we will be setting up both dev and prod environments, simply use `.env.local` to develop locally and `.env` for production environments
 
+## ローカル開発環境の立ち上げ手順
+
+### 1. 環境変数の設定
+```bash
+# .env.local.exampleをコピーして.env.localを作成
+cp .env.local.example .env.local
+```
+
+### 2. Supabaseローカル環境の起動
+```bash
+# Supabase CLIのインストール（初回のみ）
+npm install -g supabase
+
+# Supabaseプロジェクトの初期化（初回のみ）
+npx supabase init
+
+# Supabaseローカルサービスの起動
+npx supabase start
+```
+
+### 3. ローカル環境の認証情報を取得
+```bash
+# 以下のコマンドで表示される情報を.env.localに設定
+npx supabase status
+```
+
+以下の値を`.env.local`に設定：
+- `NEXT_PUBLIC_SUPABASE_URL` → API URL (http://127.0.0.1:54321)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` → anon key
+- `SUPABASE_SERVICE_ROLE_KEY` → service_role key
+- `DATABASE_URL` → DB URL (postgresql://postgres:postgres@127.0.0.1:54322/postgres)
+- `DIRECT_URL` → 同じDB URL
+
+### 4. 依存関係のインストール
+```bash
+npm install
+```
+
+### 5. データベースのセットアップ
+```bash
+# Prismaクライアントの生成
+npm run db:generate
+
+# データベースのマイグレーション実行
+npm run db:migrate
+```
+
+### 6. 開発サーバーの起動
+```bash
+npm run dev
+```
+
+### 7. アクセス可能なURL
+- **アプリケーション**: http://localhost:3000
+- **Supabase Studio**: http://127.0.0.1:54323
+- **メールボックス（Inbucket）**: http://127.0.0.1:54324
+  - ローカル環境でのメール認証テスト用
+
+### 8. Stripeローカル開発（オプション）
+```bash
+# Stripe CLIでWebhookをローカルに転送
+npm run stripe:listen
+```
+
+### 停止方法
+```bash
+# Supabaseローカル環境の停止
+npx supabase stop
+
+# 開発サーバーはCtrl+Cで停止
+```
+
 ### Setup Supabase
 
 1. Create a new project on [Supabase](https://app.supabase.io/)
@@ -94,12 +166,6 @@ To create the necessary tables to start, run `npm run db:migrate`
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
